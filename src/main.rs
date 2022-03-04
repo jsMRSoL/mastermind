@@ -6,7 +6,7 @@ use std::io;
 use std::str::FromStr;
 
 const CLEAR: &str = "\x1B[2J\x1B[1;1H";
-const MAX_TURNS: usize = 6;
+const MAX_TURNS: usize = 12;
 
 fn main() {
     if let Err(e) = run() {
@@ -28,16 +28,16 @@ fn run() -> Result<(), Box<dyn Error>> {
             .split(" ")
             .map(|c| c.trim().parse::<Bobble>())
             .collect::<Result<Vec<Bobble>, _>>()?;
-        if guess_vec.len() > 6 {
+        if guess_vec.len() > 5 {
             // println!("That's too many guesses! I'll just take your first six.");
-            guess_vec.truncate(6);
+            guess_vec.truncate(5);
         }
         // println!("Your guess: {:?}", &guess_vec);
 
         let mut right_col_pos: usize = 0;
         let mut right_col: usize = 0;
-        let mut rest: usize = 6;
-        for b in 0..6 {
+        let mut rest: usize = 5;
+        for b in 0..5 {
             if &secret[b] == &guess_vec[b] {
                 right_col_pos += 1;
             }
@@ -46,7 +46,7 @@ fn run() -> Result<(), Box<dyn Error>> {
             }
         }
 
-        if right_col_pos == 6 {
+        if right_col_pos == 5 {
             println!("Your guess: {:?}", &guess_vec);
             show_win();
             break;
@@ -109,7 +109,7 @@ fn set_up_pins() -> Vec<Bobble> {
     let mut options = vec![Red, Green, Blue, Pink, Black, Yellow, White, Orange];
     let mut chosen: Vec<Bobble> = vec![];
     let mut rng = rand::thread_rng();
-    for _ in 0..6 {
+    for _ in 0..5 {
         let idx = rng.gen_range(0..options.len());
         let choice = options.swap_remove(idx);
         chosen.push(choice);
